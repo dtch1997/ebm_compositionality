@@ -2,8 +2,8 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.python.platform import flags
 
-from data import Cubes, Pairs, CubesColor, CubesPos, CubesContinual, CubesCrossProduct, CelebA
-from models import CubesNet, HeirNet, CubesNetGen
+from data import Cubes, CubesColor, CubesPos, CubesContinual, CubesCrossProduct, CelebA
+from models import CubesNet, CubesNetGen
 import os.path as osp
 import os
 from baselines.logger import TensorBoardOutputFormat
@@ -18,8 +18,6 @@ import torch
 import numpy as np
 from custom_adam import AdamOptimizer
 import matplotlib.pyplot as plt
-from hmc import hmc
-from filters import stride_3
 
 from mpi4py import MPI
 comm = MPI.COMM_WORLD
@@ -899,10 +897,6 @@ def main():
             print("Finished processing loop construction ...")
 
             target_vars = {}
-
-            if FLAGS.antialias:
-                antialias = tf.tile(stride_3, (1, 1, tf.shape(x_mod)[3], tf.shape(x_mod)[3]))
-                inp = tf.nn.conv2d(x_mod, antialias, [1, 2, 2, 1], padding='SAME')
 
             test_x_mod = x_mod
 
