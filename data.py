@@ -8,11 +8,10 @@ import os.path as osp
 import os
 import numpy as np
 import time
-from scipy.misc import imread, imresize
-from skimage.color import rgb2grey
+from imageio import imread
+from PIL import Image
 from torchvision.datasets import CIFAR10, MNIST, SVHN, CIFAR100, ImageFolder
 from torchvision import transforms
-from imagenet_preprocessing import ImagenetPreprocessor
 import torch
 import torchvision
 from itertools import product
@@ -325,7 +324,7 @@ class CelebA(Dataset):
 
         path = self.ims[index]
         im = imread(path)
-        im = imresize(im, (32, 32))
+        im = np.array(Image.fromarray(im).resize(32,32))
         image_size = 32
         im = im / 255.
 
@@ -365,7 +364,7 @@ class CelebA(Dataset):
             fname = info.name
         path = osp.join(self.path, fname)
         im = imread(path)
-        im = imresize(im, (128, 128))
+        im = np.array(Image.fromarray(im).resize(32,32))
         image_size = 128
         im = im / 255.
 
