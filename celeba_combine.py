@@ -1,7 +1,6 @@
 import tensorflow as tf
 import math
 from tqdm import tqdm
-from hmc import hmc
 from tensorflow.python.platform import flags
 from torch.utils.data import DataLoader, Dataset
 from models import ResNet128
