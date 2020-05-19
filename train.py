@@ -19,12 +19,6 @@ import numpy as np
 from custom_adam import AdamOptimizer
 import matplotlib.pyplot as plt
 
-from mpi4py import MPI
-comm = MPI.COMM_WORLD
-rank = comm.Get_rank()
-
-# import horovod.tensorflow as hvd
-# hvd.init()
 
 # from inception import get_inception_score
 
@@ -333,7 +327,6 @@ def train(target_vars, saver, sess, logger, dataloader, resume_iter, logdir):
                     print("Training is unstable")
                     assert False
 
-                # if hvd.rank() == 0:
                 print(string)
                 logger.writekvs(kvs)
             else:
@@ -494,20 +487,12 @@ def test(target_vars, saver, sess, logger, dataloader):
 
 
 def main():
-    # print("Local rank: ", hvd.local_rank(), hvd.size())
 
     logdir = osp.join(FLAGS.logdir, FLAGS.exp)
-    # if hvd.rank() == 0:
-    #     if not osp.exists(logdir):
-    #         os.makedirs(logdir)
     logger = TensorBoardOutputFormat(logdir)
-    #else:
-    #    logger = None
 
     config = tf.ConfigProto()
 
-    # if hvd.size() > 1:
-    #     config.gpu_options.visible_device_list = str(hvd.local_rank())
 
     sess = tf.Session(config=config)
     LABEL = None
