@@ -4,7 +4,6 @@ import numpy as np
 from utils import conv_block, get_weight, attention, conv_cond_concat, init_conv_weight, init_attention_weight, init_res_weight, smart_res_block, smart_res_block_optim, init_convt_weight
 from utils import init_fc_weight, smart_conv_block, smart_fc_block, smart_atten_block, groupsort, smart_convt_block, swish
 from data_vis import standard_transforms
-from filters import stride_3
 
 flags.DEFINE_bool('swish_act', False, 'use the swish activation for dsprites')
 
@@ -48,11 +47,6 @@ class CubesNet(object):
         return weights
 
     def forward(self, inp, weights, attention_mask, reuse=False, scope='', stop_grad=False, label=None, stop_at_grad=False, stop_batch=False):
-
-        if FLAGS.antialias:
-            # Antialias the image to smooth local perturbations
-            antialias = tf.tile(stride_3, (1, 1, tf.shape(inp)[3], tf.shape(inp)[3]))
-            inp = tf.nn.conv2d(inp, antialias, [1, 2, 2, 1], padding='SAME')
 
         channels = self.channels
         if FLAGS.augment_vis:
