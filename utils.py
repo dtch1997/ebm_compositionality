@@ -8,7 +8,6 @@ import warnings
 from tensorflow.contrib.layers.python import layers as tf_layers
 from tensorflow.python.platform import flags
 from tensorflow.contrib.framework import sort
-from filters import stride_3, stride_5
 
 FLAGS = flags.FLAGS
 flags.DEFINE_integer('spec_iter', 1, 'Number of iterations to normalize spectrum of matrix')
@@ -16,12 +15,10 @@ flags.DEFINE_float('spec_norm_val', 1.0, 'Desired norm of matrices')
 flags.DEFINE_bool('downsample', False, 'Wheter to do average pool downsampling')
 flags.DEFINE_bool('spec_eval', False, 'Set to true to prevent spectral updates')
 
-
 def get_median(v):
     v = tf.reshape(v, [-1])
     m = tf.shape(v)[0] // 2
     return tf.nn.top_k(v, m)[m - 1]
-
 
 def set_seed(seed):
     import torch
@@ -33,10 +30,8 @@ def set_seed(seed):
     random.seed(seed)
     tf.set_random_seed(seed)
 
-
 def swish(inp):
     return inp * tf.nn.sigmoid(inp)
-
 
 class ReplayBuffer(object):
     def __init__(self, size):
@@ -573,8 +568,6 @@ def smart_res_block(
         res = tf.image.resize_nearest_neighbor(
             res, [2 * res_shape_list[1], 2 * res_shape_list[2]])
     elif downsample:
-        # antialias = tf.tile(stride_3, (1, 1, tf.shape(res)[3], tf.shape(res)[3]))
-        # res = tf.nn.conv2d(res, antialias, [1, 2, 2, 1], padding='SAME')
         res = tf.layers.average_pooling2d(res, (2, 2), 2)
 
     res = act(res)
