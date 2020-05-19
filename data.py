@@ -15,6 +15,7 @@ from torchvision import transforms
 import torch
 import torchvision
 from itertools import product
+import pandas as pd
 import random
 
 FLAGS = flags.FLAGS
