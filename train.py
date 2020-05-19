@@ -17,10 +17,8 @@ from tensorflow.core.util import event_pb2
 import torch
 import numpy as np
 from custom_adam import AdamOptimizer
-from scipy.misc import imsave
 import matplotlib.pyplot as plt
 from hmc import hmc
-import scipy.ndimage
 from filters import stride_3
 
 from mpi4py import MPI
