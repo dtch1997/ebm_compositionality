@@ -3,7 +3,6 @@ from tensorflow.python.platform import flags
 import numpy as np
 from utils import conv_block, get_weight, attention, conv_cond_concat, init_conv_weight, init_attention_weight, init_res_weight, smart_res_block, smart_res_block_optim, init_convt_weight
 from utils import init_fc_weight, smart_conv_block, smart_fc_block, smart_atten_block, groupsort, smart_convt_block, swish
-from data_vis import standard_transforms
 
 flags.DEFINE_bool('swish_act', False, 'use the swish activation for dsprites')
 
@@ -49,9 +48,6 @@ class CubesNet(object):
     def forward(self, inp, weights, attention_mask, reuse=False, scope='', stop_grad=False, label=None, stop_at_grad=False, stop_batch=False):
 
         channels = self.channels
-        if FLAGS.augment_vis:
-            for transform in standard_transforms:
-                inp = transform(inp)
 
         batch_size = tf.shape(inp)[0]
 
@@ -186,9 +182,6 @@ class ResNet128(object):
         weights = weights.copy()
         batch = tf.shape(inp)[0]
 
-        if FLAGS.augment_vis:
-            for transform in standard_transforms:
-                inp = transform(inp)
 
         if not FLAGS.cclass:
             label = None
