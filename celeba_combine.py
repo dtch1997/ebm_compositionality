@@ -9,7 +9,6 @@ from utils import optimistic_restore, ReplayBuffer
 import os.path as osp
 import numpy as np
 from rl_algs.logger import TensorBoardOutputFormat
-from scipy.misc import imsave
 import os
 from custom_adam import AdamOptimizer
 from itertools import product
@@ -65,8 +64,6 @@ def conceptcombine(sess, kvs, save_exp_dir):
     output = sess.run([x_mod], feed_dict)[0]
     output = output.reshape((-1, 5, 128, 128, 3)).transpose((0, 2, 1, 3, 4)).reshape((-1, 128 * n, 3))
     print(output.shape, output.max(), output.min())
-    imsave("debug.png", output)
-
 
 def combination_figure(sess, kvs, select_idx):
     n = 16
@@ -87,7 +84,6 @@ def combination_figure(sess, kvs, select_idx):
 
     output = sess.run([x_mod], feed_dict)[0]
     output = output.reshape((n * 128, 128, 3))
-    imsave("debug.png", output)
 
 
 def negation_figure(sess, kvs, select_idx):
@@ -109,8 +105,6 @@ def negation_figure(sess, kvs, select_idx):
 
     output = sess.run([x_mod], feed_dict)[0]
     output = output.reshape((n * 128, 128, 3))
-    imsave("debug.png", output)
-
 
 def combine_main(models, resume_iters, select_idx):
     config = tf.ConfigProto()
